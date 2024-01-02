@@ -25,7 +25,7 @@ export const PlayerCard: React.FC<PlayerCardProps> = ({
       ) : (
         <div className="w-16 h-28 bg-gray-200 rounded-md" />
       )}
-      <p className="text-center mt-2">{playerName}</p>
+      <p className="text-center mt-2 capitalize">{playerName}</p>
     </div>
   );
 };
