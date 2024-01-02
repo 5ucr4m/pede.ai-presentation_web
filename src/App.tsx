@@ -5,16 +5,16 @@ import { GameSocketProdiver } from "./context/useSocket";
 
 function App() {
   return (
-    <GameSocketProdiver>
-      <div className="flex flex-1 h-screen w-screen items-center justify-center">
-        <Router>
+    <div className="flex flex-1 h-screen w-screen items-center justify-center">
+      <Router>
+        <GameSocketProdiver>
           <Routes>
             <Route path="/" element={<FormPage />} />
-            <Route path="/game" element={<GamePage />} />
+            <Route path="/game/:id" element={<GamePage />} />
           </Routes>
-        </Router>
-      </div>
-    </GameSocketProdiver>
+        </GameSocketProdiver>
+      </Router>
+    </div>
   );
 }
 
