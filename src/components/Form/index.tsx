@@ -1,8 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from "react";
-
-interface GameFormProps {
-  onCreateGame: (name: string, votingSystem: string) => void;
-}
+import useSocket from "../../context/useSocket";
 
 const votingOptions = [
   {
@@ -11,13 +9,22 @@ const votingOptions = [
   },
 ];
 
-const GameForm: React.FC<GameFormProps> = ({ onCreateGame }) => {
-  const [gameName, setGameName] = useState("");
+const GameForm: React.FC = () => {
+  const { userID, connect } = useSocket();
+  const [username, setusername] = useState("");
+  const [room, setRoom] = useState<string>("");
   const [votingSystem, setVotingSystem] = useState(votingOptions[0].id);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onCreateGame(gameName, votingSystem);
+    connect(
+      {
+        username,
+        userID,
+        password: "123456",
+      },
+      room
+    );
   };
 
   return (
@@ -32,8 +39,58 @@ const GameForm: React.FC<GameFormProps> = ({ onCreateGame }) => {
         <input
           type="text"
           id="gameName"
-          value={gameName}
-          onChange={(e) => setGameName(e.target.value)}
+          value={username}
+          onChange={(e) => setusername(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-4 h-[54px]"
+          placeholder="Game's name"
+          required
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="gameName"
+          className="block text-lg font-bold text-gray-200"
+        >
+          User-ID
+        </label>
+        <input
+          type="text"
+          id="gameName"
+          value={userID}
+          disabled
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-4 h-[54px]"
+          placeholder="Game's name"
+          required
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="gameName"
+          className="block text-lg font-bold text-gray-200"
+        >
+          Room
+        </label>
+        <input
+          type="text"
+          id="gameName"
+          value={room}
+          onChange={(e) => setRoom(e.target.value)}
+          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-4 h-[54px]"
+          placeholder="Entre na sala ou deixe em branco para criar uma nova"
+        />
+      </div>
+      <div>
+        <label
+          htmlFor="gameName"
+          className="block text-lg font-bold text-gray-200"
+        >
+          Password
+        </label>
+        <input
+          type="text"
+          id="gameName"
+          value="123456"
+          disabled
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-300 focus:ring focus:ring-red-200 focus:ring-opacity-50 p-4 h-[54px]"
           placeholder="Game's name"
           required
