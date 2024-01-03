@@ -66,8 +66,10 @@ export const GameSocketProdiver: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const revelCards = useCallback(() => {
-    socket?.emit("show-cards", room, (data: any) => {
+    socket?.emit("show-cards", room, (data: any, status: "show" | "hide") => {
       setInfos(data);
+      console.log({ data, status });
+      setIsRevealed(status === "show");
     });
   }, [socket, room]);
 
@@ -84,7 +86,7 @@ export const GameSocketProdiver: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const connect = useCallback((auth: connectProps, room: string) => {
-    const gameCardSocket = io(`ws://localhost:3003`, { auth });
+    const gameCardSocket = io(`ws://192.168.31.42:3003`, { auth });
     setSocket(gameCardSocket);
     setRoom(room);
 
