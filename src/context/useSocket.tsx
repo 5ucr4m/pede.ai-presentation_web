@@ -24,6 +24,7 @@ interface ISocketContextData {
   connect: (data: connectProps, room: string) => void;
   joinRoom: (room: string) => void;
   revelCards: () => void;
+  resetGame: () => void;
   sendValue: (value: string | number) => void;
 }
 const SocketContext = createContext<ISocketContextData>(
@@ -68,7 +69,13 @@ export const GameSocketProdiver: React.FC<{ children: React.ReactNode }> = ({
   const revelCards = useCallback(() => {
     socket?.emit("show-cards", room, (data: any, status: "show" | "hide") => {
       setInfos(data);
-      console.log({ data, status });
+      setIsRevealed(status === "show");
+    });
+  }, [socket, room]);
+
+  const resetGame = useCallback(() => {
+    socket?.emit("reset", room, (data: any, status: "show" | "hide") => {
+      setInfos(data);
       setIsRevealed(status === "show");
     });
   }, [socket, room]);
@@ -107,12 +114,17 @@ export const GameSocketProdiver: React.FC<{ children: React.ReactNode }> = ({
     });
 
     gameCardSocket.onAny((event, ...args) => {
-      console.log({ event, args });
+      console.info("in: ", { event, args });
+    });
+
+    gameCardSocket.onAnyOutgoing((event, ...args) => {
+      console.info("out: ", { event, args });
     });
 
     return () => {
       gameCardSocket.off("connect");
       gameCardSocket.off("update-users");
+      gameCardSocket.off("change-status");
       gameCardSocket.off("disconnect");
     };
   }, []);
@@ -135,6 +147,7 @@ export const GameSocketProdiver: React.FC<{ children: React.ReactNode }> = ({
         connect,
         joinRoom,
         revelCards,
+        resetGame,
         sendValue,
       }}
     >
