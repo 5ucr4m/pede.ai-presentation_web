@@ -93,7 +93,8 @@ export const GameSocketProdiver: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const connect = useCallback((auth: connectProps, room: string) => {
-    const gameCardSocket = io(`ws://192.168.31.42:3003`, { auth });
+    // const gameCardSocket = io(`ws://192.168.31.42:3003`, { auth });
+    const gameCardSocket = io(`wss://planing-poker.onrender.com`, { auth });
     setSocket(gameCardSocket);
     setRoom(room);
 
